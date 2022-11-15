@@ -42,7 +42,7 @@ def lambda_handler(event, context):
                 data_list.append(temp_data)
         
         # concatenating all the files together:
-        df = pd.concat(dat_list)
+        df = pd.concat(data_list)
         small_data = df.head(20)
 
         # Create SQLAlchemy engine to connect to MySQL Database
