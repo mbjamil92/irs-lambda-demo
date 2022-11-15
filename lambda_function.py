@@ -18,10 +18,10 @@ BUCKET = os.getenv('BUCKET')
 BUCKET_PREFIX = os.getenv('BUCKET_PREFIX')
 
 # Credentials to database connection
-hostname= os.getenv('HOSTNAME')
-dbname= os.getenv('DATABASE')
-uname= os.getenv('USERNAME')
-pwd= os.getenv('PASSWORD')
+hostname= "database-1.cud3aiszcxo4.us-east-1.rds.amazonaws.com"
+dbname= "IRS_CHAR"
+uname= "admin"
+pwd= "Ladygaga321"
 
 def lambda_handler(event, context):
     try:
