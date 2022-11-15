@@ -7,9 +7,8 @@ import sys
 import time
 import datetime as dt
 import io
-import sqlalchemy
 from sqlalchemy import create_engine
-import pymysql
+
 
 ####### LOADING ENVIRONMENT VARIABLES #######
 load_dotenv()
