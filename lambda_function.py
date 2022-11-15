@@ -7,8 +7,7 @@ import sys
 import time
 import datetime as dt
 import io
-import sqlalchemy
-from sqlalchemy import create_engine
+import mysql.connector
 
 
 ####### LOADING ENVIRONMENT VARIABLES #######
@@ -24,6 +23,7 @@ hostname= os.getenv('HOSTNAME')
 dbname= os.getenv('DATABASE')
 uname= os.getenv('USERNAME')
 pwd= os.getenv('PASSWORD')
+port = os.getenv('PORT')
 
 def lambda_handler(event, context):
     try:
@@ -48,7 +48,7 @@ def lambda_handler(event, context):
         df = pd.concat(data_list)
 
         # Create SQLAlchemy engine to connect to MySQL Database
-        engine = create_engine("mysql+pymysql://{user}:{pw}@{host}/{db}".format(host=hostname, db=dbname, user=uname, pw=pwd))
+        engine = mysql.connector.connect(user = uname, password = pwd, host= hostname, database = dbname, port = port);
 
         # Truncate the table everytime before an ETL:
         engine.execute("TRUNCATE TABLE irs990")
