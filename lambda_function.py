@@ -40,23 +40,22 @@ def lambda_handler(event, context):
                 body=my_bucket_object.get()['Body'].read()
                 temp_data = pd.read_csv(io.BytesIO(body))
                 data_list.append(temp_data)
-            df = pd.concat(dat_list)
-            small_data = df.head(20)
+        
+        # concatenating all the files together:
+        df = pd.concat(dat_list)
+        small_data = df.head(20)
 
-            # Create SQLAlchemy engine to connect to MySQL Database
-            engine = create_engine("mysql+pymysql://{user}:{pw}@{host}/{db}"
-				.format(host=hostname, db=dbname, user=uname, pw=pwd))
+        # Create SQLAlchemy engine to connect to MySQL Database
+        engine = create_engine("mysql+pymysql://{user}:{pw}@{host}/{db}".format(host=hostname, db=dbname, user=uname, pw=pwd))
 
-            # Truncate the table everytime before an ETL:
-            engine.execute("TRUNCATE TABLE irs990")
+        # Truncate the table everytime before an ETL:
+        engine.execute("TRUNCATE TABLE irs990")
 
-            # Convert dataframe to sql table                                   
-            small_data.to_sql('irs990', engine, if_exists='append',index=False)
+        # Convert dataframe to sql table                                   
+        small_data.to_sql('irs990', engine, if_exists='append',index=False)
 
-            # checking if data was successfully written:
-            engine.execute("SELECT * FROM irs990 limit 10").fetchall()
+        # checking if data was successfully written:
+        engine.execute("SELECT * FROM irs990 limit 10").fetchall()
 
-            # closing engine connection by deleting it:
-            del engine
-        except Exception as e:
-            logging.error(e)
+    except Exception as e:
+        logging.error(e)
