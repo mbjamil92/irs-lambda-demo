@@ -7,6 +7,7 @@ import sys
 import time
 import datetime as dt
 import io
+from sqlalchemy import create_engine
 
 ####### LOADING ENVIRONMENT VARIABLES #######
 load_dotenv()
@@ -43,7 +44,6 @@ def lambda_handler(event, context):
         
         # concatenating all the files together:
         df = pd.concat(data_list)
-        small_data = df.head(20)
 
         # Create SQLAlchemy engine to connect to MySQL Database
         engine = create_engine("mysql+pymysql://{user}:{pw}@{host}/{db}".format(host=hostname, db=dbname, user=uname, pw=pwd))
@@ -52,7 +52,7 @@ def lambda_handler(event, context):
         engine.execute("TRUNCATE TABLE irs990")
 
         # Convert dataframe to sql table                                   
-        small_data.to_sql('irs990', engine, if_exists='append',index=False)
+        df.to_sql('irs990', engine, if_exists='append',index=False)
 
         # checking if data was successfully written:
         engine.execute("SELECT * FROM irs990 limit 10").fetchall()
