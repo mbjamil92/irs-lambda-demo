@@ -7,6 +7,7 @@ import sys
 import time
 import datetime as dt
 import io
+import sqlalchemy
 from sqlalchemy import create_engine
 
 
