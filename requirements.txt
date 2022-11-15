@@ -1,2 +1,5 @@
+aws_lambda_powertools==1.21.1
+boto3==1.19.10
+python-dotenv==0.20.0
 pandas==1.2.1
 sqlalchemy==1.4.7
