@@ -7,8 +7,7 @@ import sys
 import time
 import datetime as dt
 import io
-import mysql.connector
-
+import pymysql
 
 ####### LOADING ENVIRONMENT VARIABLES #######
 load_dotenv()
@@ -48,16 +47,20 @@ def lambda_handler(event, context):
         df = pd.concat(data_list)
 
         # Create SQLAlchemy engine to connect to MySQL Database
-        engine = mysql.connector.connect(user = uname, password = pwd, host= hostname, database = dbname, port = port);
+        conn = pymysql.connect(host=hostname,
+                       port=port,
+                       user=uname, 
+                       passwd=pwd,  
+                       db=dbname)
 
         # Truncate the table everytime before an ETL:
-        engine.execute("TRUNCATE TABLE irs990")
+        conn.execute("TRUNCATE TABLE irs990")
 
         # Convert dataframe to sql table                                   
-        df.to_sql('irs990', engine, if_exists='append',index=False)
+        df.to_sql(name='irs990', con=conn, if_exists='append',index=False,flavor='mysql')
 
         # checking if data was successfully written:
-        engine.execute("SELECT * FROM irs990 limit 10").fetchall()
+        print(conn.execute("SELECT * FROM irs990 limit 10").fetchall())
 
     except Exception as e:
         logging.error(e)
