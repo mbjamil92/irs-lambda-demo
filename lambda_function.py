@@ -22,7 +22,6 @@ hostname= os.getenv('HOSTNAME')
 dbname= os.getenv('DATABASE')
 uname= os.getenv('USERNAME')
 pwd= os.getenv('PASSWORD')
-port = os.getenv('PORT')
 
 def lambda_handler(event, context):
     try:
@@ -46,21 +45,33 @@ def lambda_handler(event, context):
         # concatenating all the files together:
         df = pd.concat(data_list)
 
-        # Create SQLAlchemy engine to connect to MySQL Database
-        conn = pymysql.connect(host=hostname,
-                       port=port,
-                       user=uname, 
-                       passwd=pwd,  
-                       db=dbname)
+        # Connect to MySQL Database
+        connection = pymysql.connect(host=hostname,user=uname,password=pwd,database=dbname)
+
+        cursor = connection.cursor()
 
         # Truncate the table everytime before an ETL:
-        conn.execute("TRUNCATE TABLE irs990")
+        sql_trunc = "TRUNCATE TABLE `irs990`"
+        cursor.execute(sql_trunc)
 
-        # Convert dataframe to sql table                                   
-        df.to_sql(name='irs990', con=conn, if_exists='append',index=False,flavor='mysql')
+        # commit the results
+        connection.commit()
+
+        # creating columns from the dataframe:
+        cols = "`,`".join([str(i) for i in df.columns.tolist()])
+
+        # adding dataframe to mysql RDS
+        for i,row in df.iterrows():
+            sql = "INSERT INTO `irs990` (`" +cols + "`) VALUES (" + "%s,"*(len(row)-1) + "%s)"
+            cursor.execute(sql, tuple(row))
+            connection.commit()
 
         # checking if data was successfully written:
-        print(conn.execute("SELECT * FROM irs990 limit 10").fetchall())
+        sql = "SELECT * FROM `irs990`"
+        cursor.execute(sql)
+        result = cursor.fetchall()
+        for i in result:
+            print(i)
 
     except Exception as e:
         logging.error(e)
