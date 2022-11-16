@@ -22,6 +22,7 @@ hostname= os.getenv('HOSTNAME')
 dbname= os.getenv('DATABASE')
 uname= os.getenv('USERNAME')
 pwd= os.getenv('PASSWORD')
+port = os.getenv('PORT')
 
 def lambda_handler(event, context):
     try:
@@ -46,7 +47,7 @@ def lambda_handler(event, context):
         df = pd.concat(data_list)
 
         # Connect to MySQL Database
-        connection = pymysql.connect(host=hostname,user=uname,password=pwd,database=dbname)
+        connection = pymysql.connect(host=hostname,user=uname,password=pwd,database=dbname,port=port)
 
         cursor = connection.cursor()
 
