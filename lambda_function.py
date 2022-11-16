@@ -79,7 +79,7 @@ def lambda_handler(event, context):
         for i in result:
             print(i)
 
-        # closing MySQL connection:
+        # closing MySQL2 connection:
         connection.close()
 
     except Exception as e:
