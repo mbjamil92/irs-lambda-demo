@@ -29,10 +29,10 @@ def lambda_handler(event, context):
     data_list = []
     for my_bucket_object in my_bucket.objects.filter(Prefix=BUCKET_PREFIX):
         if my_bucket_object.key.endswith(".csv"):
-        key=my_bucket_object.key
-        body=my_bucket_object.get()['Body'].read()
-        temp_data = pd.read_csv(io.BytesIO(body))
-        data_list.append(temp_data)
+            key=my_bucket_object.key
+            body=my_bucket_object.get()['Body'].read()
+            temp_data = pd.read_csv(io.BytesIO(body))
+            data_list.append(temp_data)
         
     # concatenating all the files together:
     df = pd.concat(data_list)
