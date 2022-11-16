@@ -22,7 +22,6 @@ hostname= os.environ.get('HOSTNAME')
 dbname= os.environ.get('DATABASE')
 uname= os.environ.get('USERNAME')
 pwd= os.environ.get('PASSWORD')
-port = os.environ.get(PORT)
 
 def lambda_handler(event, context):
     try:
@@ -53,7 +52,7 @@ def lambda_handler(event, context):
         print(f'host={hostname},user={uname},password={pwd},database={dbname}')
 
         # Connect to MySQL Database
-        connection = pymysql.connect(host=hostname,user=uname,password=pwd,database=dbname,port=port)
+        connection = pymysql.connect(host=hostname,user=uname,password=pwd,database=dbname)
 
         cursor = connection.cursor()
 
