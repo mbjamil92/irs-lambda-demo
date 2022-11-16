@@ -46,6 +46,12 @@ def lambda_handler(event, context):
         # concatenating all the files together:
         df = pd.concat(data_list)
 
+        # lets see the df:
+        print(df)
+
+        # lets see our credentials:
+        print(f'host={hostname},user={uname},password={pwd},database={dbname}')
+
         # Connect to MySQL Database
         connection = pymysql.connect(host=hostname,user=uname,password=pwd,database=dbname,port=port)
 
