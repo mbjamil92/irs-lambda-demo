@@ -72,8 +72,8 @@ def lambda_handler(event, context):
         result = cursor.fetchall()
         for i in result:
             print(i)
-            
-        # closing Mysql connection:
+
+        # closing MySql connection:
         connection.close()
 
     except Exception as e:
