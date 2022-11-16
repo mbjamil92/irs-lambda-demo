@@ -14,15 +14,15 @@ load_dotenv()
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
 
-BUCKET = os.getenv('BUCKET')
-BUCKET_PREFIX = os.getenv('BUCKET_PREFIX')
+BUCKET = os.environ.get('BUCKET')
+BUCKET_PREFIX = os.environ.get('BUCKET_PREFIX')
 
 # Credentials to database connection
-hostname= os.getenv('HOSTNAME')
-dbname= os.getenv('DATABASE')
-uname= os.getenv('USERNAME')
-pwd= os.getenv('PASSWORD')
-port = os.getenv('PORT')
+hostname= os.environ.get('HOSTNAME')
+dbname= os.environ.get('DATABASE')
+uname= os.environ.get('USERNAME')
+pwd= os.environ.get('PASSWORD')
+port = os.environ.get('PORT')
 
 def lambda_handler(event, context):
     try:
