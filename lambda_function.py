@@ -22,7 +22,7 @@ hostname= os.environ.get('HOSTNAME')
 dbname= os.environ.get('DATABASE')
 uname= os.environ.get('USERNAME')
 pwd= os.environ.get('PASSWORD')
-port = os.environ.get('PORT')
+port = os.environ.get(PORT)
 
 def lambda_handler(event, context):
     try:
